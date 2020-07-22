@@ -8,7 +8,11 @@ const db = require("../db")
 
 
 /** MAKE ROUTES HERE */
-
+router.get("/", (req, res, next) => {
+    console.log("hit")
+    const response = {message: " arrived at  invoices get route"}
+    return res.send(response)
+})
 
 
 

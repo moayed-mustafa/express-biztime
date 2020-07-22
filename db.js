@@ -12,10 +12,6 @@ else {
     DB_URI = "postgresql:///biztime"
 }
 
-// connect to db
-// let db = new Client({
-//     connectionString: DB_URI
-// })
 let db = new Client({
     connectionString: DB_URI
 })
