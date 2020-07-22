@@ -6,7 +6,16 @@ const express = require("express");
 const app = express();
 const ExpressError = require("./expressError")
 
+
+
 app.use(express.json());
+
+// require &register routers
+const companiesRouter = require('./routes/companies')
+app.use('/companies', companiesRouter)
+const invoicesRouter = require('./routes/invoices')
+app.use('/invoices', invoicesRouter)
+
 
 
 /** 404 handler */
