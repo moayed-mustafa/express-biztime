@@ -7,7 +7,6 @@ const router = express.Router()
 const ExpressError = require('../expressError')
 // require db
 const db = require("../db")
-// const app = require('../app')
 
 
 /** MAKE ROUTES HERE */
@@ -33,7 +32,6 @@ router.get("/:code", async (req, res, next) => {
         if (result.rows.length === 0) {
             throw new ExpressError(`${code} not found`, 404)
         }
-        console.log(result.rows[0].code)
         const invoices = await db.query(`
             SELECT * FROM invoices
             WHERE comp_code ='${result.rows[0].code}'
@@ -47,7 +45,6 @@ router.get("/:code", async (req, res, next) => {
 
 // create a company
 router.post("/create-company", async (req, res, next) => {
-    // {code, name, description}
     try {
         const { code, name, description } = req.body
         if (!(code || name || description)) {
@@ -89,8 +86,8 @@ router.put("/:code", async (req, res, next) => {
     } catch (e) {
         return next(e)
     }
-    // delete company
 })
+// delete company
 
 router.delete("/:code", async (req, res, next) => {
     try {

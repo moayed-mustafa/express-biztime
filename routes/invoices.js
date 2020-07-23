@@ -16,7 +16,6 @@ router.get("/", async (req, res, next) => {
     const results = await db.query(`
     SELECT * FROM invoices;
     `)
-    console.log(results.rows)
     if (results.rows.length == 0) {
         throw new ExpressError("This table has no rows", 404)
     }
@@ -55,7 +54,6 @@ router.post('/create-invoice', async (req, res, next) => {
 
 
         const { comp_code, amt } = req.body
-        console.log(comp_code, amt)
     if (comp_code == undefined || amt == undefined) {
         throw new ExpressError('Data is missing', 404);
     }
@@ -94,7 +92,6 @@ router.put('/:id', async (req, res, next) => {
     if (results.rows.length == 0) {
         throw new ExpressError(` No invoicce with id: ${id}`, 404)
     }
-    console.log(results.rows)
         return res.send({ invoice: results.rows[0] })
     } catch (e) {
         next(e)
