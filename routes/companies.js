@@ -14,8 +14,11 @@ const db = require("../db")
     // get all companies
 router.get("/", async (req, res, next) => {
     try {
-        const result = await db.query(`SELECT * FROM companies`)
-        return res.send({ companies: result.rows })
+        const results = await db.query(`SELECT * FROM companies`)
+        if (results.rows.length == 0) {
+            throw new ExpressError("This table has no rows", 404)
+        }
+        return res.send({ companies: results.rows })
     }catch (e) {
         next(e)
     }
@@ -30,7 +33,12 @@ router.get("/:code", async (req, res, next) => {
         if (result.rows.length === 0) {
             throw new ExpressError(`${code} not found`, 404)
         }
-        return res.send({ results: result.rows })
+        console.log(result.rows[0].code)
+        const invoices = await db.query(`
+            SELECT * FROM invoices
+            WHERE comp_code ='${result.rows[0].code}'
+        `)
+        return res.send({ results: result.rows[0], invoices: invoices.rows[0] })
 
     }catch (e) {
         return next(e)
@@ -92,14 +100,13 @@ router.delete("/:code", async (req, res, next) => {
         WHERE code =$1
         `, [code])
         if (result.rowCount == 0) {
-            throw new ExpressError(`${code} does not exist`, 404)
+            throw new ExpressError(`company with code :${code} does not exist`, 404)
         }
         return res.send({status: 'Deleted'})
 
     } catch (e) {
         return next(e)
     }
-    // delete company
 
 
 })
