@@ -43,7 +43,6 @@ router.get("/:code", async (req, res, next) => {
         // structure the result:
         const { code, name, description } = result.rows[0]
         let industries = result.rows.map(r => r.industry_field)
-        console.log(result.rows)
         return res.send({ code,name,description,industries, invoices: invoices.rows[0] })
 
     }catch (e) {
@@ -97,8 +96,6 @@ router.post("/:code", async (req, res, next) => {
                                         RETURNING *`, [comp_code, industry_code])
 
 
-        // structure the result:
-        console.log(result)
 
         return res.send({ message: result.rows })
 

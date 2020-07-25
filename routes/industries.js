@@ -8,7 +8,6 @@ const db = require("../db")
 // list all industries
 router.get("/", async (req, res, next) => {
     try {
-        let codes = []
         let data = {}
         // get all the industries
         const results = await db.query(`
@@ -19,7 +18,6 @@ router.get("/", async (req, res, next) => {
         ON c.code = ci.comp_code
         `)
         // structure the resonse
-        console.log(results.rows)
         results.rows.forEach(r => {
             data[r.industry_field] ? data[r.industry_field].push(r.code) : data[r.industry_field]=[r.code]
         })
@@ -44,7 +42,6 @@ router.post("/create-industry", async (req, res, next) => {
         RETURNING code, industry_field
         `, [code, industry_field])
 
-        console.log(results.rows)
         return res.send({result:results.rows[0] })
     } catch (e) {
         return next (e)
