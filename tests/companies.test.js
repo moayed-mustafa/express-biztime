@@ -42,15 +42,18 @@ beforeEach(async () => {
     testCompany = comp.rows[0]
     testInvoice = invoice.rows[0]
 })
+//==================================================================================================================
 
 afterEach(async () => {
     await db.query('DELETE FROM companies')
 })
+//==================================================================================================================
 
 afterAll(async () => {
     await db.end()
 })
 
+//==================================================================================================================
 
 describe('GET/companies', () => {
     test('test reading companies', async () => {
@@ -62,12 +65,51 @@ describe('GET/companies', () => {
 
     })
 })
+//==================================================================================================================
+
 describe('GET/companies/code', () => {
     test('test reading a company', async () => {
 
         const res = await request(app).get(`/companies/${testCompany.code}`)
         expect(res.statusCode).toEqual(200)
         expect(res.body.results).toEqual(testCompany)
+
+
+    })
+})
+//==================================================================================================================
+
+describe('POST/companies/create-company', () => {
+    test('test posting a company', async () => {
+
+        const res = await request(app).post(`/companies/create-company`).send({code:'MIC', name:'Moe Ice Cream', description:'Best Ice cream ever'})
+        expect(res.statusCode).toEqual(201)
+        expect(res.body).toEqual({code:'MIC', name:'Moe Ice Cream', description:'Best Ice cream ever'})
+
+
+    })
+})
+//==================================================================================================================
+
+describe('PUT/companies/code', () => {
+    test('test posting a company', async () => {
+
+        const res = await request(app).put(`/companies/${testCompany.code}`).send({name:'Moe Ice Cream', description:'Best Ice cream ever'})
+        expect(res.statusCode).toEqual(200)
+        console.log(res.body)
+        expect(res.body).toEqual({code:testCompany.code, name:'Moe Ice Cream', description:'Best Ice cream ever'})
+
+
+    })
+})
+//==================================================================================================================
+describe('DELETE/companies/code', () => {
+    test('test posting a company', async () => {
+
+        const res = await request(app).delete(`/companies/${testCompany.code}`)
+        expect(res.statusCode).toEqual(200)
+        console.log(res.body)
+        expect(res.body).toEqual({status: "Deleted"})
 
 
     })
